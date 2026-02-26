@@ -1,0 +1,44 @@
+{
+  "name": "osmaster",
+  "version": "1.0.0",
+  "description": "High-performance native OSM routing engine for Node.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "build/Release/osmaster_native.node",
+    "README.md",
+    "package.json"
+  ],
+  "scripts": {
+    "install": "cmake-js compile",
+    "build": "cmake-js compile",
+    "build:ts": "tsc",
+    "rebuild": "cmake-js recompile",
+    "dev": "tsx --watch test_lib_usage.ts",
+    "demo": "tsx demo/server.ts",
+    "prepublishOnly": "npm run build && npm run build:ts"
+  },
+  "keywords": [
+    "osm",
+    "routing",
+    "astar",
+    "graph",
+    "native"
+  ],
+  "author": "Youbingo",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "cmake-js": "^8.0.0",
+    "node-addon-api": "^8.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/body-parser": "^1.19.6",
+    "@types/express": "^5.0.6",
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1"
+  }
+}

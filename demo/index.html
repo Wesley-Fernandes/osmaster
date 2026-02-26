@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OSMaster - Demo de Roteamento</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      #navbar {
+        background: #1a1a1a;
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      #map {
+        flex: 1;
+        width: 100%;
+      }
+      .controls {
+        position: absolute;
+        top: 80px;
+        left: 10px;
+        z-index: 1000;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        width: 250px;
+      }
+      h1 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.3s;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .stats {
+        margin-top: 10px;
+        font-size: 0.9rem;
+        color: #555;
+      }
+      #loading {
+        display: none;
+        margin-top: 10px;
+        color: #007bff;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar">
+      <h1>OSMaster - Native Engine</h1>
+      <div id="status">Status: Pronto</div>
+    </div>
+
+    <div class="controls">
+      <b>Roteamento Sul-Brasil</b>
+      <p style="font-size: 0.8rem">Clique no mapa para definir Início e Fim.</p>
+      <button id="clearBtn">Limpar Mapa</button>
+      <div id="loading">Calculando rota...</div>
+      <div id="stats" class="stats"></div>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      const map = L.map("map").setView([-27.5954, -48.548], 10);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(
+        map,
+      );
+
+      let startMarker, endMarker, routeLine;
+      let points = [];
+
+      map.on("click", async (e) => {
+        if (points.length >= 2) return;
+
+        const { lat, lng } = e.latlng;
+        points.push({ lat, lon: lng });
+
+        if (points.length === 1) {
+          startMarker = L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup("Início")
+            .openPopup();
+        } else if (points.length === 2) {
+          endMarker = L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup("Fim")
+            .openPopup();
+          calculateRoute();
+        }
+      });
+
+      async function calculateRoute() {
+        document.getElementById("loading").style.display = "block";
+        document.getElementById("stats").innerText = "";
+
+        try {
+          const response = await fetch("/api/route", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ start: points[0], end: points[1] }),
+          });
+
+          const data = await response.json();
+
+          if (data.found) {
+            const latlngs = data.path.map((p) => [p.lat, p.lon]);
+            routeLine = L.polyline(latlngs, {
+              color: "#007bff",
+              weight: 5,
+              opacity: 0.7,
+            }).addTo(map);
+            map.fitBounds(routeLine.getBounds());
+
+            document.getElementById("stats").innerText =
+              `Distância: ${(data.distance / 1000).toFixed(2)} km\n` +
+              `Pontos: ${data.path.length}\n` +
+              `Tempo: ${data.timeMs}ms`;
+          } else {
+            alert("Rota não encontrada!");
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Erro ao calcular rota.");
+        } finally {
+          document.getElementById("loading").style.display = "none";
+        }
+      }
+
+      document.getElementById("clearBtn").onclick = () => {
+        if (startMarker) map.removeLayer(startMarker);
+        if (endMarker) map.removeLayer(endMarker);
+        if (routeLine) map.removeLayer(routeLine);
+        points = [];
+        document.getElementById("stats").innerText = "";
+      };
+    </script>
+  </body>
+</html>

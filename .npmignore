@@ -1,0 +1,26 @@
+# Source code
+src/
+core/
+bindings/
+deps/
+CMakeLists.txt
+cmake-js.json
+
+# Test files and PBFs
+test/
+PBF/
+sul-260225.osm.pbf
+test_*.cjs
+test_*.ts
+demo/
+
+# Build artifacts (keeping only the final .node binary for installation)
+build/
+!build/Release/osmaster_native.node
+
+# IDE and System files
+.vscode/
+.git/
+.gitignore
+node_modules/
+*.log

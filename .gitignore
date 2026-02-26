@@ -1,0 +1,13 @@
+node_modules/
+PBF/
+build/
+lib/
+*.osm.pbf
+*.node
+*.log
+.DS_Store
+dist/
+deps/
+bin/
+obj/
+.cache/
