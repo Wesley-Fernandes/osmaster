@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="logo.png" alt="OSMaster Logo" width="300">
+</p>
+
 # OSMaster 🚀
 
 **OSMaster** é um motor de roteamento nativo de ultra-performance para Node.js e TypeScript. Ele processa dados do OpenStreetMap (.osm.pbf) para fornecer cálculos de rota e busca de coordenadas em milissegundos.
@@ -20,7 +24,7 @@ npm run build:ts  # Compila o wrapper TypeScript
 ## 🛠️ Guia de Uso (TypeScript)
 
 ```typescript
-import { OSMaster } from "./lib/index";
+import { OSMaster } from "osmaster";
 
 const osm = new OSMaster();
 

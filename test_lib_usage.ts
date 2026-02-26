@@ -1,4 +1,4 @@
-import { OSMaster } from './lib/index';
+import { OSMaster } from 'osmaster';
 import path from 'path';
 
 const osm = new OSMaster();

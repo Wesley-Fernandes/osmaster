@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { OSMaster } from '../src/index';
+import { OSMaster } from 'osmaster';
 import path from 'path';
 
 const app = express();
