@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="OSMaster Logo" width="300">
+  <img src="https://i.ibb.co/cSskfmjx/logo.png" alt="OSMaster Logo" width="300">
 </p>
 
 # OSMaster 🚀
