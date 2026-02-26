@@ -12,8 +12,12 @@
 
 ## Fase 2: Otimização e Performance
 
-- [ ] Serialização binária do grafo (Loading instantâneo)
-- [ ] Contraction Hierarchies (CH) para rotas ultra-rápidas
+- [ ] **Fase 2: Contraction Hierarchies (CH)**
+  - [ ] Node Ranking (Edge Difference, etc.)
+  - [ ] Node Contraction (Shortcut generation)
+  - [ ] Bidirectional DIjkstra Query
+  - [ ] Serialização binária do grafo contraído
+- [ ] Multi-level graph concepts (CRP/Overlay) para atualizações rápidas
 - [ ] Perfis de Veículo (Carro, Bicicleta, Pedestre)
 - [ ] Multi-threaded Preprocessing
 

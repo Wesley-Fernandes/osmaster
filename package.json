@@ -14,7 +14,7 @@
     "install": "cmake-js compile",
     "build": "cmake-js compile",
     "build:ts": "tsc",
-    "rebuild": "cmake-js recompile",
+    "rebuild": "cmake-js rebuild",
     "dev": "tsx --watch test_lib_usage.ts",
     "demo": "tsx demo/server.ts",
     "prepublishOnly": "npm run build && npm run build:ts"

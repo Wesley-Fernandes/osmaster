@@ -7,12 +7,15 @@
 struct Edge {
   uint32_t to;
   float weight; // Distance in meters
+  bool is_shortcut = false;
+  uint32_t middle_node = 0xFFFFFFFF; // For shortcut reconstruction
 };
 
 struct NodeInfo {
   int64_t osm_id;
   double lat;
   double lon;
+  uint32_t rank = 0xFFFFFFFF; // CH rank, default max
 };
 
 class Graph {
@@ -46,10 +49,20 @@ public:
     }
   }
 
+  void add_shortcut(uint32_t from, uint32_t to, float weight, uint32_t middle) {
+    adj[from].push_back({to, weight, true, middle});
+  }
+
   void clear() {
     nodes.clear();
     adj.clear();
     osm_to_internal.clear();
+  }
+
+  void reset_ranks() {
+    for (auto &node : nodes) {
+      node.rank = 0xFFFFFFFF;
+    }
   }
 
   size_t node_count() const { return nodes.size(); }
